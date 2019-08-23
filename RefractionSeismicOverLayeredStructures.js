@@ -10,8 +10,8 @@
 
 //Now define the absolute coordinates of each of the four corners of
 //the plotting area
- let ulcorx =  let ((apwidth - gwidth) / 2.0);
- let ulcory =  let ((apheight - gheight) / 2.0);
+ let ulcorx =  (apwidth - gwidth) / 2.0;
+ let ulcory =  (apheight - gheight) / 2.0;
  let urcory = ulcory;
  let urcorx = ulcorx + gwidth;
  let llcorx = ulcorx;
@@ -46,9 +46,9 @@
 //will be the same as the height of the seismogram
 //plotting array in pixels. So, given this compute the
 //time interval between each point.
-let  y[] = new let [gheight]; //Stick seismogram
-let  s[] = new let [gheight]; //Source pulse
-let  f[] = new let [2 * gheight - 1]; //output seismogram of which only seisheight will be displayed
+let  y = [gheight]; //Stick seismogram
+let  s = [gheight]; //Source pulse
+let  f = [2 * gheight - 1]; //output seismogram of which only seisheight will be displayed
 
 //Define off screen images and graphics used to draw into.
 //Three images are defined - one for times, one for wiggle plots
@@ -379,7 +379,7 @@ function MakePlots(g, type) {
     setColor(Color.black);
     for (d = Math.ceil(xmin); d <= xmax; d += inc) {
         xp = XLoc(d);
-        dlab = (let) d;
+        dlab = d;
         drawLine(xp, llcory, xp, llcory - 5);
 
         fwidth = fontm.stringWidth(""+dlab);
@@ -408,7 +408,7 @@ function MakePlots(g, type) {
         yp = YLoc(t);
         drawLine(ulcorx, yp, ulcorx + 5, yp);
 
-        tlab = (let) t;
+        tlab = t;
         fwidth = fontm.stringWidth(""+tlab);
         drawString(""+tlab, ulcorx - fwidth - 5, yp + fheight / 3);
         drawLine(urcorx, yp, urcorx - 5, yp);
@@ -423,7 +423,7 @@ function MakePlots(g, type) {
     //Generate wiggle traces or variable area traces and
     //add them to the plot.
     let x, time, amp;
-    if (type == 'w') {
+    if (type === 'w') {
         for (x = xmin; x <= xmax; x += dx) {
             time = GetTMin(x);
             xp = XLoc(x);
@@ -431,7 +431,7 @@ function MakePlots(g, type) {
             DrawTrace(xp, time, amp, 'w',g);
         }
     }
-    if (type == 'v') {
+    if (type === 'v') {
         for (x = xmin; x <= xmax; x += dx) {
             time = GetTMin(x);
             xp = XLoc(x);
@@ -449,9 +449,9 @@ function MakePlots(g, type) {
         //Set Point color depending on layer from which arrival
         //originated
         setColor(Color.red);
-        if (layer == 2)
+        if (layer === 2)
             setColor(Color.magenta);
-        if (layer == 3)
+        if (layer === 3)
             setColor(Color.blue);
 
         //Check to make sure data is within plot bounds

@@ -26,11 +26,11 @@ let PTypeLabel;
 //Define Objects for scrollbar labels
 let V1Label, V2Label, V3Label, DxLabel, NLabel, NDataLabel;
 
-//Define variables to hold custom colors
-let Sky = new Color(.41f, 1.0f, .97f);
-let L1c = new Color(.43f, .75f, .54f);
-let L2c = new Color(.49f, .75f, .50f);
-let L3c = new Color(.64f, .55f, .46f);
+// //Define variables to hold custom colors
+// let Sky = #00FFFF;
+// let L1c = new Color(.43f, .75f, .54f);
+// let L2c = new Color(.49f, .75f, .50f);
+// let L3c = new Color(.64f, .55f, .46f);
 
 //Now define minimum and maximum values in user space
 //and corresponding maximums and minimums for the scroll bars
@@ -95,8 +95,8 @@ let WidthMax = 500.0; //Width of plot area in meters
 let MinThickness = 0.25;
 let xscale = xsectx / WidthMax;
 let yscale = (xsecty - surfacey) / DepthMax;
-let xpts[] = new int[4]; //Array for polygon points
-let ypts[] = new int[4]; //Array for polygon points
+let xpts= new int[4]; //Array for polygon points
+let ypts= new int[4]; //Array for polygon points
 
 //Now define the absolute coordinates of each of the four corners of
 //the plotting area. Coordinates start at the earths surface
