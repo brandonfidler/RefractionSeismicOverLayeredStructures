@@ -97,28 +97,24 @@
 
                         <div class="slideGridItem">
                             <strong>Source Type:</strong> <br>
-                            <input   type="radio" name="sourceType" value="Hammer"> Hammer <br>
-                            <input   type="radio" name="sourceType" value="Shotgun"> Shotgun <br>
-                            <input   type="radio" name="sourceType" value="Dynamite"> Dynamite <br>
+                            <input   type="radio" name="sourceType" value="Hammer" id="hammer"> Hammer <br>
+                            <input   type="radio" name="sourceType" value="Shotgun" id="shotgun"> Shotgun <br>
+                            <input   type="radio" name="sourceType" value="Dynamite" id="dynamite" checked="checked"> Dynamite <br>
+                        </div>
+
+                        <div class="slideGridItem">
+                            <button type="button" id="print">Print</button>
+                            <button type="button" id="PSeisms">Plot Traces</button>
                         </div>
                         <div class="slideGridItem">
-                            <button type="button">Plot Type</button>
+                            <button type="button" id="PType">Plot Type</button>
                         </div>
+                        <div class="slideGridItem">
 
+                        </div>
                         <!-- Radius Control Panel -->
                         <canvas class="gtRadSample" width="240px" height="0px" style="position: absolute; background-color: #e9e9e9; border: 1px solid #ddd; margin-top: 535px; z-index: 0;"></canvas>
-                        <div style="padding-top: 45px; z-index: 1;">
-                            <div style="margin-left: 85px;">
-                                <button id="rad_up_arrow" onclick="radArrowUp();" onmousedown="inter=setInterval(radArrowUp, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);" style="width: 70px;"><img src="arrow.png" alt="up" style="width: 50px; height: 50px;"/></button>
-                            </div>
-                            <div><button id="rad_left_arrow" onclick="radArrowLeft();" onmousedown="inter=setInterval(radArrowLeft, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);" style="width: 70px; margin-left: 10px;"><img class="rotate270" src="arrow.png" alt="left" style="width: 50px; height: 50px;"/></button>
-                                <button id="rad_right_arrow" onclick="radArrowRight();"  onmousedown="inter=setInterval(radArrowRight, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);" style="width: 70px; margin-left: 76px;"><img class="rotate90" src="arrow.png" alt="right" style="width: 50px; height: 50px;"/></button>
-                            </div>
-                            <div style="margin-left: 85px;">
-                                <button id="rad_down_arrow" onclick="radArrowDown();" onmousedown="inter=setInterval(radArrowDown, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);" style="width: 70px;"><img class="rotate180" src="arrow.png" alt="down" style="width: 50px; height: 50px;"/></button><p></p>
-                            </div>
 
-                        </div>
 
                         <!-- rescale button -->
                         <div class="slideGridItem" style="margin-left: 150px; margin-top: 30px;"><button onclick="rescale();">Rescale Plot</button></div>

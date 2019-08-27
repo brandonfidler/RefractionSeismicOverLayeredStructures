@@ -82,9 +82,6 @@ function start(){
     //Set up offscreen images
     SetImages(apwidth, apheight);
 
-    //Get Parameters from model frame
-    GetParameters();
-
     //Set plot scales
     GetScales();
 
