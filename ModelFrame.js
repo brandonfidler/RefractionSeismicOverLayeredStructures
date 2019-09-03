@@ -5,10 +5,10 @@ let Originator;
 let V1Bar, V2Bar, V3Bar, DxBar, NBar, NDataBar;
 
 //Define Objects for Radio buttons//PROBABLY DONT NEED
-let sourcetype = new CheckboxGroup();
-let  hammer = new Checkbox("Hammer");
-let  shotgun = new Checkbox("Shotgun");
-let  dynamite = new Checkbox("Dynamite");
+// let sourcetype = new CheckboxGroup();
+// let  hammer = new Checkbox("Hammer");
+// let  shotgun = new Checkbox("Shotgun");
+// let  dynamite = new Checkbox("Dynamite");
 let stype = 'd'; //character string to identify currently
 //active source type h=hammer, s=shotgun
 //d=dynamite
@@ -95,13 +95,13 @@ let WidthMax = 500.0; //Width of plot area in meters
 let MinThickness = 0.25;
 let xscale = xsectx / WidthMax;
 let yscale = (xsecty - surfacey) / DepthMax;
-let xpts= new int[4]; //Array for polygon points
-let ypts= new int[4]; //Array for polygon points
+let xpts= new [4]; //Array for polygon points
+let ypts= new [4]; //Array for polygon points
 
 //Now define the absolute coordinates of each of the four corners of
 //the plotting area. Coordinates start at the earths surface
-let ulcorx = (int)((framex - xsectx) / 2.0);
-let ulcory = (int)(25 + surfacey);
+let ulcorx = ((framex - xsectx) / 2.0);
+let ulcory = (25 + surfacey);
 let urcory = ulcory;
 let urcorx = ulcorx + xsectx;
 let llcorx = ulcorx;
@@ -146,7 +146,6 @@ dxf_slider.oninput = function()
     textOutputChange(this.value);
     dxf = dxfFormat(this.value, true);
     frameChanged();
-    // alert("hello")
 };
 
 function dxf_LeftButton()
@@ -167,7 +166,6 @@ function dxf_RightButton()
 
 rho_slider.oninput = function ()
 {
-
     textOutputChange(dxf_slider.value, this.value);
     rhof = rhoFormat(this.value, true);
     frameChanged();
@@ -482,4 +480,33 @@ function frameChanged()
     r_ctx.backgroundColor = "#e9e9e9";
     paint();
     displaySliderValues();
+}
+
+
+function getVals(){
+    // Get slider values
+    var parent = this.parentNode;
+    var slides = parent.getElementsByTagName("input");
+    var slide1 = parseFloat( slides[0].value );
+    var slide2 = parseFloat( slides[1].value );
+    // Neither slider will clip the other, so make sure we determine which is larger
+    if( slide1 > slide2 ){ var tmp = slide2; slide2 = slide1; slide1 = tmp; }
+
+    var displayElement = parent.getElementsByClassName("rangeValues")[0];
+    displayElement.innerHTML = slide1 + " - " + slide2;
+}
+
+window.onload = function(){
+    // Initialize Sliders
+    var sliderSections = document.getElementsByClassName("range-slider");
+    for( var x = 0; x < sliderSections.length; x++ ){
+        var sliders = sliderSections[x].getElementsByTagName("input");
+        for( var y = 0; y < sliders.length; y++ ){
+            if( sliders[y].type ==="range" ){
+                sliders[y].oninput = getVals;
+                // Manually trigger event first time to display values
+                sliders[y].oninput();
+            }
+        }
+    }
 }
