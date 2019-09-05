@@ -20,9 +20,9 @@
                             <strong>Velocity Top:</strong>
                             <table>
                                 <tr>
-                                    <td><button class="ArrowButtons" onclick="dxf_LeftButton();" onmousedown="inter=setInterval(dxf_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
+                                    <td><button class="ArrowButtons" onclick="v1_LeftButton();" onmousedown="inter=setInterval(v1_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
                                     <td><label for="VelocityTop"></label><input type="range" class="slider" id="VelocityTop"></td>
-                                    <td><button class="ArrowButtons" onclick="dxf_RightButton();" onmousedown="inter=setInterval(dxf_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
+                                    <td><button class="ArrowButtons" onclick="v1_RightButton();" onmousedown="inter=setInterval(v1_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
                                 </tr>
                             </table>
 
@@ -31,9 +31,9 @@
                             <strong>Velocity Middle:</strong>
                             <table>
                                 <tr>
-                                    <td><button class="ArrowButtons" onclick="rho_LeftButton();" onmousedown="inter=setInterval(rho_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
+                                    <td><button class="ArrowButtons" onclick="v2_LeftButton();" onmousedown="inter=setInterval(v2_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
                                     <td><label for="VelocityMiddle"></label><input type="range" min="1" max="66" value="1" class="slider" id="VelocityMiddle"></td>
-                                    <td><button class="ArrowButtons" onclick="rho_RightButton();" onmousedown="inter=setInterval(rho_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
+                                    <td><button class="ArrowButtons" onclick="v2_RightButton();" onmousedown="inter=setInterval(v2_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
                                 </tr>
                             </table>
                         </div>
@@ -41,20 +41,20 @@
                             <strong>Velocity Bottom:</strong>
                             <table>
                                 <tr>
-                                    <td><button class="ArrowButtons" onclick="dkt_LeftButton();" onmousedown="inter=setInterval(dkt_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
+                                    <td><button class="ArrowButtons" onclick="v3_LeftButton();" onmousedown="inter=setInterval(v3_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
                                     <td><label for="VelocityBottom"></label><input type="range" class="slider" id="VelocityBottom"></td>
-                                    <td><button class="ArrowButtons" onclick="dkt_RightButton();" onmousedown="inter=setInterval(dkt_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
+                                    <td><button class="ArrowButtons" onclick="v3_RightButton();" onmousedown="inter=setInterval(v3_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
                                 </tr>
                             </table>
 
                         </div>
                         <div class="slideGridItem">
-                            <strong>Source Stack:</strong>
+                            <strong>Spacing:</strong>
                             <table>
                                 <tr>
-                                    <td><button class="ArrowButtons" onclick="std_LeftButton();" onmousedown="inter=setInterval(std_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
-                                    <td><label for="SourceStack"></label><input type="range" min="1" max="12" value="1" class="slider" id="SourceStack"></td>
-                                    <td><button class="ArrowButtons" onclick="std_RightButton();" onmousedown="inter=setInterval(std_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
+                                    <td><button class="ArrowButtons" onclick="dx_LeftButton();" onmousedown="inter=setInterval(dx_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
+                                    <td><label for="Spacing"></label><input type="range" min="1" max="12" value="1" class="slider" id="Spacing"></td>
+                                    <td><button class="ArrowButtons" onclick="dx_RightButton();" onmousedown="inter=setInterval(dx_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
                                 </tr>
                             </table>
 
@@ -63,36 +63,26 @@
                             <strong>Number of Geophones:</strong>
                             <table>
                                 <tr>
-                                    <td><button class="ArrowButtons" onclick="n_of_obs_LeftButton();" onmousedown="inter=setInterval(n_of_obs_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
+                                    <td><button class="ArrowButtons" onclick="N_LeftButton();" onmousedown="inter=setInterval(N_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
                                     <td><label for="NumOfGeophones"></label><input type="range" min="1" max="21" value="1" class="slider" id="NumOfGeophones"></td>
-                                    <td><button class="ArrowButtons"onclick="n_of_obs_RightButton();" onmousedown="inter=setInterval(n_of_obs_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
+                                    <td><button class="ArrowButtons"onclick="N_RightButton();" onmousedown="inter=setInterval(N_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
                                 </tr>
                             </table>
                         </div>
 
                         <div class="slideGridItem">
-                            <strong>Spacing:</strong>
+                            <strong>Source Stack:</strong>
                             <table>
                                 <tr>
-                                    <td><button class="ArrowButtons" onclick="inc_LeftButton();" onmousedown="inter=setInterval(inc_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
-                                    <td><label for="Spacing"></label><input type="range" min ="-90" max="90" value ="52" class="slider" id="Spacing"></td>
-                                    <td><button class="ArrowButtons" onclick="inc_RightButton();" onmousedown="inter=setInterval(inc_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
+                                    <td><button class="ArrowButtons" onclick="ndata_LeftButton();" onmousedown="inter=setInterval(ndata_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
+                                    <td><label for="SourceStack"></label><input type="range" min ="-90" max="90" value ="52" class="slider" id="SourceStack"></td>
+                                    <td><button class="ArrowButtons" onclick="ndata_RightButton();" onmousedown="inter=setInterval(ndata_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
                                 </tr>
                             </table>
 
                         </div>
 
-                        <div class="slideGridItem">
-                            <strong>Length Profile(m):</strong>
-                            <table>
-                                <tr>
-                                    <td><button class="ArrowButtons" onclick="len_LeftButton();" onmousedown="inter=setInterval(len_LeftButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8249</button></td>
-                                    <td><label for="LengthProfile"></label><input type="range" min ="-90" max="90" value ="52" class="slider" id="LengthProfile"></td>
-                                    <td><button class="ArrowButtons" onclick="len_RightButton();" onmousedown="inter=setInterval(len_RightButton, 100);" onmouseup="clearInterval(inter);" onmouseout="clearInterval(inter);">&#8250</button></td>
-                                </tr>
-                            </table>
 
-                        </div>
 
 
                         <div class="slideGridItem">

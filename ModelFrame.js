@@ -109,6 +109,8 @@ let llcory = ulcory + xsecty - surfacey;
 let lrcorx = urcorx;
 let lrcory = llcory;
 
+let s_value;	//variable used to collect scrollbar info
+let s_size;   //variable to hold scroller size
 
 //Define values for manipulating frame images and scrollbars
 let LastY1, LastX1; //Layer 1 parameters
@@ -116,15 +118,13 @@ let LastY2, LastX2; //Layer 2 parameters
 let LastYs, LastXs; //Source parameters
 let LastYr, LastXr; //Receiver paramters
 
-
-
 // Range Sliders
 let VelocityTop_slider = document.getElementById("VelocityTop");
 let VelocityMiddle_slider = document.getElementById("VelocityMiddle");
 let VelocityBottom_slider = document.getElementById("VelocityBottom");
 let SourceStack_slider = document.getElementById("SourceStack");
+let dx_slider = document.getElementById("Spacing");
 let NumOfGeophones_slider = document.getElementById("NumOfGeophones");
-let Spacing_slider = document.getElementById("Spacing");
 let LengthProfile_slider = document.getElementById("LengthProfile");
 
 //radio buttons
@@ -155,163 +155,144 @@ function displaySliderValues(dxf_v = VelocityTop_slider.value, rho_v = VelocityM
 // Trigger events for the range sliders, each time the user moves the slider
 // (e.g. Station Spacing) the corresponding function below will fire.
 
-dxf_slider.oninput = function()
+VelocityTop_slider.oninput = function()
 {
     textOutputChange(this.value);
-    dxf = dxfFormat(this.value, true);
+    v1 = v1Format(this.value, true);
     frameChanged();
 };
 
-function dxf_LeftButton()
+function v1_LeftButton()
 {
-    dxf_slider.value--;
-    dxf = dxfFormat(dxf_slider.value, true);
-    textOutputChange(dxf_slider.value);
+    VelocityTop_slider.value--;
+    v1 = dxfFormat(VelocityTop_slider.value, true);
+    textOutputChange(VelocityTop_slider.value);
     frameChanged();
 }
 
-function dxf_RightButton()
+function v1_RightButton()
 {
-    dxf_slider.value++;
-    dxf = dxfFormat(dxf_slider.value, true);
-    textOutputChange(dxf_slider.value);
+    VelocityTop_slider.value++;
+    v1 = dxfFormat(VelocityTop_slider.value, true);
+    textOutputChange(VelocityTop_slider.value);
     frameChanged();
 }
 
-rho_slider.oninput = function ()
+VelocityMiddle_slider.oninput = function ()
 {
-    textOutputChange(dxf_slider.value, this.value);
-    rhof = rhoFormat(this.value, true);
+    textOutputChange(VelocityTop_slider.value, this.value);
+    v2 = v2Format(this.value, true);
     frameChanged();
 };
-function rho_LeftButton()
+
+function v2_LeftButton()
 {
 
-    rho_slider.value--;
-    rhof = rhoFormat(rho_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value);
+    VelocityMiddle_slider.value--;
+    v2 = v2Format(VelocityMiddle_slider.value, true);
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value);
     frameChanged();
 }
-function rho_RightButton()
+function v2_RightButton()
 {
-    rho_slider.value++;
-    rhof = rhoFormat(rho_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value);
+    VelocityMiddle_slider.value++;
+    v2 = v2Format(VelocityMiddle_slider.value, true);
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value);
     frameChanged();
 }
 
 
-n_of_obs_slider.oninput = function ()
+VelocityBottom_slider.oninput = function ()
 {
-    textOutputChange(dxf_slider.value, rho_slider.value, this.value);
-    ndataf = this.value;
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, this.value);
+    v3 = v3Format(this.value,true);
     frameChanged();
 };
-function n_of_obs_LeftButton()
+function v3_LeftButton()
 {
-    n_of_obs_slider.value--;
-    ndataf = n_of_obs_slider.value;
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value);
+    VelocityBottom_slider.value--;
+    v3 = VelocityBottom_slider.value;
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value);
     frameChanged();
 }
-function n_of_obs_RightButton()
+function v3_RightButton()
 {
-    n_of_obs_slider.value++;
-    ndataf = n_of_obs_slider.value;
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value);
+    VelocityBottom_slider.value++;
+    v3 = VelocityBottom_slider.value;
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value);
     frameChanged();
 }
 
-std_dev_slider.oninput = function ()
+dx_slider.oninput = function()
 {
-
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value,
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value,
         this.value);
-    stdf = stdFormat(this.value, true);
+    dx = dxFormat(this.value, true);
     frameChanged();
+    // alert("hello")
 };
-function std_LeftButton()
+
+function dx_LeftButton()
 {
-    std_dev_slider.value--;
-    stdf = stdFormat(std_dev_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value);
-    frameChanged();
-}
-function std_RightButton()
-{
-    std_dev_slider.value++;
-    stdf = stdFormat(std_dev_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value);
+    dx_slider.value--;
+    dx = dxFormat(dx_slider.value, true);
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value);
     frameChanged();
 }
 
-dike_trend_slider.oninput = function ()
+function dx_RightButton()
 {
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value,
+    dx_slider.value++;
+    dx = dxfFormat(dx_slider.value, true);
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value);
+    frameChanged();
+}
+
+NumOfGeophones_slider.oninput = function ()
+{
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value,
         this.value);
-    dktf = dktFormat(this.value, true);
+    nx = nFormat(this.value, true);
     frameChanged();
 };
-function dkt_LeftButton()
+function N_LeftButton()
 {
-    dike_trend_slider.value--;
-    dktf = dktFormat(dike_trend_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value, dike_trend_slider.value);
+    NumOfGeophones_slider.value--;
+    nx = nFormat(NumOfGeophones_slider.value, true);
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value);
     frameChanged();
 }
-function dkt_RightButton()
+function N_RightButton()
 {
-    dike_trend_slider.value++;
-    dktf = dktFormat(dike_trend_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value, dike_trend_slider.value);
-    frameChanged();
-}
-
-inclination_slider.oninput = function () {
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value, dike_trend_slider.value,
-        this.value)
-    incf = incFormat(this.value, true);
-    frameChanged();
-};
-
-function inc_LeftButton()
-{
-    inclination_slider.value--;
-    incf = incFormat(inclination_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value, dike_trend_slider.value, inclination_slider.value);
+    NumOfGeophones_slider.value++;
+    nx = nFormat(NumOfGeophones_slider.value, true);
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value);
     frameChanged();
 }
 
-function inc_RightButton()
-{
-    inclination_slider.value++;
-    incf = incFormat(inclination_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value, dike_trend_slider.value, inclination_slider.value);
-    frameChanged();
-}
-
-LengthBar_slider.oninput = function () {
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value, dike_trend_slider.value,inclination_slider.value,
-        this.value)
-    lengthf = lenFormat(this.value, true);
+SourceStack_slider.oninput = function () {
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value,
+        this.value);
+    ndata = nDataFormat(this.value, true);
     frameChanged();
 };
 
-function len_LeftButton()
+function ndata_LeftButton()
 {
-    LengthBar_slider.value--;
-    lengthf = lenFormat(LengthBar_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value, dike_trend_slider.value, inclination_slider.value, LengthBar_slider.value);
+    SourceStack_slider.value--;
+    ndata = nDataFormat(SourceStack_slider.value, true);
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value, SourceStack_slider.value);
     frameChanged();
 }
 
-function len_RightButton()
+function ndata_RightButton()
 {
-    LengthBar_slider.value++;
-    lengthf = lenFormat(LengthBar_slider.value, true);
-    textOutputChange(dxf_slider.value, rho_slider.value, n_of_obs_slider.value, std_dev_slider.value, dike_trend_slider.value, inclination_slider.value, LengthBar_slider.value);
+    SourceStack_slider.value++;
+    ndata = nDataFormat(SourceStack_slider.value, true);
+    textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value, SourceStack_slider.value);
     frameChanged();
 }
+
 
 // If the Boolean value "number_val" is set to true, then the following format
 // functions will return float values instead of a string.
@@ -336,6 +317,13 @@ function v3Format(val, number_val=false) //done
     return (((val-1)*dV3+V3Min)).toFixed(3);
 }
 
+function dxFormat(val, number_val=false) //done
+{
+    if(number_val)
+        return ((val-1)*dDx+DxMin);
+    return ((val-1)*dDx+DxMin).toFixed(2);
+}
+
 function nFormat(val, number_val=false) //done
 {
     if(number_val)
@@ -343,12 +331,6 @@ function nFormat(val, number_val=false) //done
     return ((val-1)*dN+NMin).toFixed(1);
 }
 
-function dxfFormat(val, number_val=false) //done
-{
-    if(number_val)
-        return ((val-1)*dDx+DxMin);
-    return ((val-1)*dDx+DxMin).toFixed(2);
-}
 function nDataFormat(val, number_val=false) //done
 {
     if(number_val)
@@ -357,9 +339,9 @@ function nDataFormat(val, number_val=false) //done
 }
 
 // This function clears the space where the unit text is, and redraws it.
-function textOutputChange(dxf_v = dxf_slider.value, rho_v = rho_slider.value,
-                          n_of_obs_v = n_of_obs_slider.value, std_v = std_dev_slider.value,
-                          dkt_v = dike_trend_slider.value, inc_v = inclination_slider.value,
+function textOutputChange(dxf_v = dx_slider.value, rho_v = VelocityMiddle_slider.value,
+                          n_of_obs_v = VelocityBottom_slider.value, std_v = dx_slider.value,
+                          dkt_v = NumOfGeophones_slider.value, inc_v = SourceStack_slider.value,
                           len_v = LengthBar_slider.value)
 {
     // alert("textOutputChange")
@@ -377,111 +359,100 @@ function setSlideBars() {
     let s_value;
 
     //Set Station Spacing
-    s_value = Math.trunc((dxf - DxMin) * (DxBarMax - DxBarMin) /
-        (DxMax - DxMin) + DxBarMin + 0.5);
-    dxf_slider.value = s_value;
-    dxf_slider.min = DxBarMin;
-    dxf_slider.max = DxBarMax;
+    s_value = Math.trunc((v1 - V1Min) * (V1BarMax - V1BarMin) /
+        (V1Max - V1Min) + V1BarMin + 0.5);
+    VelocityTop_slider.value = s_value;
+    VelocityTop_slider.min = V1BarMin;
+    VelocityTop_slider.max = V1BarMax;
     // alert(s_value);
     // //Set Susceptability
-    s_value = Math.trunc((rhof - RhoMin) * (RhoBarMax - RhoBarMin) /
-        (RhoMax - RhoMin) + RhoBarMin + 0.5);
-    rho_slider.value = s_value;
-    rho_slider.min = RhoBarMin;
-    rho_slider.max = RhoBarMax;
+    s_value = Math.trunc((v2 - V2Min) * (V2BarMax - V2BarMin) /
+        (V2Max - V2Min) + V2BarMin + 0.5);
+    VelocityMiddle_slider.value = s_value;
+    VelocityMiddle_slider.min = V2BarMin;
+    VelocityMiddle_slider.max = V2BarMax;
     // alert(s_value);
     //Set Number of Observations, N:
-    s_value = Math.trunc((ndataf-NMin) * (NBarMax - NBarMin) /
-        (NMax - NMin) + NBarMin + 0.5);
-    n_of_obs_slider.value = s_value;
-    n_of_obs_slider.min = NBarMin;
-    n_of_obs_slider.max = NBarMax;
+    s_value = Math.trunc((v3-V3Min) * (V3BarMax - V3BarMin) /
+        (V3Max - V3Min) + V3BarMin + 0.5);
+    VelocityBottom_slider.value = s_value;
+    VelocityBottom_slider.min = V3BarMin;
+    VelocityBottom_slider.max = V3BarMax;
     // alert(s_value);
     // // Set Standard Deviation
-    s_value = Math.trunc((stdf-StdMin) * (StdBarMax - StdBarMin) /
-        (StdMax - StdMin) + StdBarMin + 0.5);
-    std_dev_slider.value = s_value;
-    std_dev_slider.min = StdBarMin;
-    std_dev_slider.max = StdBarMax;
+    s_value = Math.trunc((dx-DxMin) * (DxBarMax - DxBarMin) /
+        (DxMax - DxMin) + DxBarMin + 0.5);
+    dx_slider.value = s_value;
+    dx_slider.min = DxBarMin;
+    dx_slider.max = DxBarMax;
     // alert(s_value);
     // // Set Dike Trend
-    s_value = Math.trunc((dktf-DktMin) * (DktBarMax - DktBarMin) /
-        (DktMax - DktMin) + DktBarMin + 0.5);
-    dike_trend_slider.value = s_value;
-    dike_trend_slider.min = DktBarMin;
-    dike_trend_slider.max = DktBarMax;
+    s_value = Math.trunc((nx-NMin) * (NBarMax - NBarMin) /
+        (NMax - NMin) + NBarMin + 0.5);
+    NumOfGeophones_slider.value = s_value;
+    NumOfGeophones_slider.min = NBarMin;
+    NumOfGeophones_slider.max = NBarMax;
 
     //Set Inclination
-    s_value = Math.trunc((incf-IncMin) * (IncBarMax - IncBarMin) /
-        (IncMax - IncMin) + IncBarMin + 0.5);
-    inclination_slider.value = s_value;
-    inclination_slider.min = IncBarMin;
-    inclination_slider.max = IncBarMax;
+    s_value = Math.trunc((ndata-NDataMin) * (NDataBarMax - NDataBarMin) /
+        (NDataMax - NDataMin) + NDataBarMin + 0.5);
+    SourceStack_slider.value = s_value;
+    SourceStack_slider.min = NDataBarMin;
+    SourceStack_slider.max = NDataBarMax;
 
-
-    s_value = Math.trunc((lengthf-LengthMin) * (LengthBarMax - LengthBarMin) /
-        (LengthMax - LengthMin) + LengthBarMin + 0.5);
-    LengthBar_slider.value = s_value;
-    LengthBar_slider.min = LengthBarMin;
-    LengthBar_slider.max = LengthBarMax;
 }
 
 function setValues(dx, rho, std, nobs,  dkt, inc, len)
 {
 
-    dxf = dx;
-    rhof = rho;
+    dx = dx;
+    v2 = rho;
     stdf = std;
-    ndataf = nobs;
+    v3 = nobs;
     dktf = dkt;
     incf = inc;
     lengthf = len;
 
     // reset range sliders
     //Set Station Spacing
-    s_value = Math.trunc((dxf - DxMin) * (DxBarMax - DxBarMin) /
+    s_value = Math.trunc((dx - DxMin) * (DxBarMax - DxBarMin) /
         (DxMax - DxMin) + DxBarMin + 0.5);
-    dxf_slider.value = s_value;
+    dx_slider.value = s_value;
 
 
     // //Set Density Contrast
-    s_value =  Math.trunc((rhof - RhoMin) * (RhoBarMax - RhoBarMin) /
+    s_value =  Math.trunc((v2 - RhoMin) * (RhoBarMax - RhoBarMin) /
         (RhoMax - RhoMin) + RhoBarMin + 0.5);
-    rho_slider.value = s_value;
+    VelocityMiddle_slider.value = s_value;
 
     //Set Number of Observations, N:
-    s_value = Math.trunc((ndataf-NMin) * (NBarMax - NBarMin) /
+    s_value = Math.trunc((v3-NMin) * (NBarMax - NBarMin) /
         (NMax - NMin) + NBarMin + 0.5);
-    n_of_obs_slider.value = s_value;
+    VelocityBottom_slider.value = s_value;
     //
     // Set Standard Deviation
     s_value = Math.trunc((stdf-StdMin) * (StdBarMax - StdBarMin) /
         (StdMax - StdMin) + StdBarMin + 0.5);
-    std_dev_slider.value = s_value;
+    dx_slider.value = s_value;
 
     // Set Dike Trend
     s_value = Math.trunc((dktf-DktMin) * (DktBarMax - DktBarMin) /
         (DktMax - DktMin) + DktBarMin + 0.5);
-    dike_trend_slider.value = s_value;
+    NumOfGeophones_slider.value = s_value;
 
     //Set Incline of Main Field
     s_value = Math.trunc((incf-IncMin) * (IncBarMax - IncBarMin) /
         (IncMax - IncMin) + IncBarMin + 0.5);
-    inclination_slider.value = s_value;
-
-    //Set Length
-    s_value = Math.trunc((lengthf - LengthMin) * (LengthBarMax - LengthBarMin) /
-        (LengthMax - LengthMin) + LengthBarMin + 0.5);
-    LengthBar_slider.value = s_value;
+    SourceStack_slider.value = s_value;
 
 }
 
 function frameChanged()
 {
-    dx = dxf;
-    k = rhof;
+    dx = dx;
+    k = v2;
     dkt = dktf;
-    ndata = ndataf;
+    ndata = v3;
     inc = incf;
     std = stdf;
     let len = lengthf;
