@@ -119,13 +119,13 @@ let LastYr, LastXr; //Receiver paramters
 
 
 // Range Sliders
-let dxf_slider = document.getElementById("station_spacing");
-let rho_slider = document.getElementById("Susceptability");
-let n_of_obs_slider = document.getElementById("nOfObservations");
-let std_dev_slider = document.getElementById("stdDev");
-let dike_trend_slider = document.getElementById("dike_trend");
-let inclination_slider = document.getElementById("incline_trend");
-let LengthBar_slider = document.getElementById("profile_length");
+let VelocityTop_slider = document.getElementById("VelocityTop");
+let VelocityMiddle_slider = document.getElementById("VelocityMiddle");
+let VelocityBottom_slider = document.getElementById("VelocityBottom");
+let SourceStack_slider = document.getElementById("SourceStack");
+let NumOfGeophones_slider = document.getElementById("NumOfGeophones");
+let Spacing_slider = document.getElementById("Spacing");
+let LengthProfile_slider = document.getElementById("LengthProfile");
 
 //radio buttons
 let hammer_radio = document.getElementById("hammer");
@@ -135,7 +135,21 @@ let dynamite_radio = document.getElementById("dynamite");
 
 
 
-
+function displaySliderValues(dxf_v = VelocityTop_slider.value, rho_v = VelocityMiddle_slider.value,
+                             n_of_obs_v = VelocityBottom_slider.value, std_v = SourceStack_slider.value,
+                             dkt_v = NumOfGeophones_slider.value, inc_v = Spacing_slider.value)
+{
+    document.getElementById("depth_val").innerHTML = ((-depth2top).toFixed(1)+" m");
+    document.getElementById("width_val").innerHTML = (width.toFixed(1)+" m");
+    r_ctx.fillText((-depth2top).toFixed(1)+" m", 42, 12);
+    r_ctx.fillText(width.toFixed(1)+" m", 42, 24);
+    document.getElementById("contrast_val").innerHTML = (rhoFormat(rho_v));
+    document.getElementById("station_spacing_val").innerHTML = (dxfFormat(dxf_v)+" m");
+    document.getElementById("num_of_obs_value").innerHTML = n_of_obs_v.toString();
+    document.getElementById("std_val").innerHTML = ((stdFormat(std_v)*100).toFixed(1)+" NT");
+    document.getElementById("dike_trend_value").innerHTML = (dktFormat(dkt_v)+ " degrees");
+    document.getElementById("incline_value").innerHTML = (incFormat(inc_v)+ " degrees");
+}
 
 
 // Trigger events for the range sliders, each time the user moves the slider
@@ -301,45 +315,45 @@ function len_RightButton()
 
 // If the Boolean value "number_val" is set to true, then the following format
 // functions will return float values instead of a string.
-function dxfFormat(val, number_val=false)
+function v1Format(val, number_val=false) //done
+{
+    if(number_val)
+        return ((val-1)*dV1+V1Min);
+    return ((val-1)*dV1+V1Min).toFixed(2);
+}
+
+function v2Format(val, number_val=false) //done
+{
+    if(number_val)
+        return ((val-1)*dV2+V2Min);
+    return ((val-1)*dV2+V2Min).toFixed(4);
+}
+
+function v3Format(val, number_val=false) //done
+{
+    if(number_val)
+        return (((val-1)*dV3+V3Min));
+    return (((val-1)*dV3+V3Min)).toFixed(3);
+}
+
+function nFormat(val, number_val=false) //done
+{
+    if(number_val)
+        return ((val-1)*dN+NMin);
+    return ((val-1)*dN+NMin).toFixed(1);
+}
+
+function dxfFormat(val, number_val=false) //done
 {
     if(number_val)
         return ((val-1)*dDx+DxMin);
     return ((val-1)*dDx+DxMin).toFixed(2);
 }
-
-function rhoFormat(val, number_val=false)
+function nDataFormat(val, number_val=false) //done
 {
     if(number_val)
-        return ((val-1)*dRho+RhoMin);
-    return ((val-1)*dRho+RhoMin).toFixed(4);
-}
-
-function stdFormat(val, number_val=false)
-{
-    if(number_val)
-        return (((val-1)*dStd+StdMin));
-    return (((val-1)*dStd+StdMin)).toFixed(3);
-}
-
-function dktFormat(val, number_val=false)
-{
-    if(number_val)
-        return ((val-1)*dDkt+DktMin);
-    return ((val-1)*dDkt+DktMin).toFixed(1);
-}
-
-function incFormat(val, number_val=false)
-{
-    if(number_val)
-        return((val-1)*dInc+IncMin);
-    return((val-1)*dInc+IncMin).toFixed(2);
-}
-function lenFormat(val, number_val=false)
-{
-    if(number_val)
-        return((val-1)*dLength+LengthMin);
-    return((val-1)*dLength+LengthMin).toFixed(2);
+        return((val-1)*dNData+NDataMin);
+    return((val-1)*dNData+NDataMin).toFixed(2);
 }
 
 // This function clears the space where the unit text is, and redraws it.
