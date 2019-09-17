@@ -68,20 +68,20 @@ let NDataBarMax = ((NDataMax - NDataMin) / dNData + 2.1);
 
 
 //Define Variables used to some initial values
-let v1 = 500.0;
-let v2 = 1200.0;
-let v3 = 2000.0;
-let m1 = 0.0; //slope of bottom of top layer
-let b1 = 5.0; //depth intercept of bottom of top layer
-let m2 = 0.0; //slope of bottom of middle layer
-let b2 = 10.0; //depth intercept of bottom of middle layer
+let v1f = 500.0;
+let v2f = 1200.0;
+let v3f = 2000.0;
+let m1f = 0.0; //slope of bottom of top layer
+let b1f = 5.0; //depth intercept of bottom of top layer
+let m2f = 0.0; //slope of bottom of middle layer
+let b2f = 10.0; //depth intercept of bottom of middle layer
 let sourcex = 200.0; //Source location
 let dsourcex = 0.5; //Allow source movements of this
 let recx = 201.0; //Minimum receiver location
 let drecx = 0.5; //Allow receiver movements of this
-let dx = 3.0; //receiver spacing
-let nx = 24; //number of receivers
-let ndata = 1; //number of sources to stack
+let dxf = 3.0; //receiver spacing
+let nxf = 24; //number of receivers
+let ndataf = 1; //number of sources to stack
 let svalue; //Variable used to construct scrollbars
 
 //Define values for drawing figures in frame
@@ -125,18 +125,51 @@ let VelocityBottom_slider = document.getElementById("VelocityBottom");
 let SourceStack_slider = document.getElementById("SourceStack"); // # of Geophones
 let dx_slider = document.getElementById("Spacing");
 let NumOfGeophones_slider = document.getElementById("NumOfGeophones");
-let LengthProfile_slider = document.getElementById("LengthProfile");
 
 //radio buttons
 let hammer_radio = document.getElementById("hammer");
 let shotgun_radio = document.getElementById("shotgun");
 let dynamite_radio = document.getElementById("dynamite");
 
+let label_list_y_loc  = 400;
 
+
+
+function start()
+{
+    // alert("hello")
+    if (canvas.getContext)
+    {
+        canvas.width = (C_WIDTH+10);
+        canvas.height = (C_HEIGHT+5);
+        v1 = v1f;
+        v2 = v2f;
+        v3 = v3f;
+        ndata = ndataf;
+        dx = dxf;
+        nx = nxf;
+
+
+        setScales();
+        setValues(v1, v2, v3, dx, nx, ndata);
+        setSlideBars();
+        paint();
+        displaySliderValues();
+    }
+}
+
+function rescale()
+{
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+    r_ctx.clearRect(0,0, width_canvas.width, width_canvas.height);
+    setScales();
+    paint();
+    displaySliderValues();
+}
 
 
 function displaySliderValues(v1_v = VelocityTop_slider.value, v2_v = VelocityMiddle_slider.value,
-                             v3_v = VelocityBottom_slider.value, n_v = SourceStack_slider.value,
+                             v3_v = VelocityBottom_slider.value, nx_v = SourceStack_slider.value,
                              ndata_v = NumOfGeophones_slider.value, dx_v = dx_slider.value)
 {
     document.getElementById("depth_val").innerHTML = ((-depth2top).toFixed(1)+" m");
@@ -148,7 +181,7 @@ function displaySliderValues(v1_v = VelocityTop_slider.value, v2_v = VelocityMid
     document.getElementById("num_of_obs_value").innerHTML = ndata_v.toString();
     document.getElementById("std_val").innerHTML = ((v3Format(v3_v)*100).toFixed(1)+" NT");
     document.getElementById("dike_trend_value").innerHTML = (dxFormat(dx_v)+ " degrees");
-    document.getElementById("incline_value").innerHTML = (nFormat(n_v)+ " degrees");
+    document.getElementById("incline_value").innerHTML = (nFormat(nx_v)+ " degrees");
 }
 
 
@@ -158,14 +191,14 @@ function displaySliderValues(v1_v = VelocityTop_slider.value, v2_v = VelocityMid
 VelocityTop_slider.oninput = function()
 {
     textOutputChange(this.value);
-    v1 = v1Format(this.value, true);
+    v1f = v1Format(this.value, true);
     frameChanged();
 };
 
 function v1_LeftButton()
 {
     VelocityTop_slider.value--;
-    v1 = dxFormat(VelocityTop_slider.value, true);
+    v1f = dxFormat(VelocityTop_slider.value, true);
     textOutputChange(VelocityTop_slider.value);
     frameChanged();
 }
@@ -173,7 +206,7 @@ function v1_LeftButton()
 function v1_RightButton()
 {
     VelocityTop_slider.value++;
-    v1 = dxFormat(VelocityTop_slider.value, true);
+    v1f = dxFormat(VelocityTop_slider.value, true);
     textOutputChange(VelocityTop_slider.value);
     frameChanged();
 }
@@ -181,7 +214,7 @@ function v1_RightButton()
 VelocityMiddle_slider.oninput = function ()
 {
     textOutputChange(VelocityTop_slider.value, this.value);
-    v2 = v2Format(this.value, true);
+    v2f = v2Format(this.value, true);
     frameChanged();
 };
 
@@ -189,14 +222,14 @@ function v2_LeftButton()
 {
 
     VelocityMiddle_slider.value--;
-    v2 = v2Format(VelocityMiddle_slider.value, true);
+    v2f = v2Format(VelocityMiddle_slider.value, true);
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value);
     frameChanged();
 }
 function v2_RightButton()
 {
     VelocityMiddle_slider.value++;
-    v2 = v2Format(VelocityMiddle_slider.value, true);
+    v2f = v2Format(VelocityMiddle_slider.value, true);
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value);
     frameChanged();
 }
@@ -205,20 +238,20 @@ function v2_RightButton()
 VelocityBottom_slider.oninput = function ()
 {
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, this.value);
-    v3 = v3Format(this.value,true);
+    v3f = v3Format(this.value,true);
     frameChanged();
 };
 function v3_LeftButton()
 {
     VelocityBottom_slider.value--;
-    v3 = VelocityBottom_slider.value;
+    v3f = VelocityBottom_slider.value;
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value);
     frameChanged();
 }
 function v3_RightButton()
 {
     VelocityBottom_slider.value++;
-    v3 = VelocityBottom_slider.value;
+    v3f = VelocityBottom_slider.value;
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value);
     frameChanged();
 }
@@ -227,7 +260,7 @@ dx_slider.oninput = function()
 {
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value,
         this.value);
-    dx = dxFormat(this.value, true);
+    dxf = dxFormat(this.value, true);
     frameChanged();
     // alert("hello")
 };
@@ -235,7 +268,7 @@ dx_slider.oninput = function()
 function dx_LeftButton()
 {
     dx_slider.value--;
-    dx = dxFormat(dx_slider.value, true);
+    dxf = dxFormat(dx_slider.value, true);
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value);
     frameChanged();
 }
@@ -243,7 +276,7 @@ function dx_LeftButton()
 function dx_RightButton()
 {
     dx_slider.value++;
-    dx = dxFormat(dx_slider.value, true);
+    dxf = dxFormat(dx_slider.value, true);
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value);
     frameChanged();
 }
@@ -252,20 +285,20 @@ NumOfGeophones_slider.oninput = function ()
 {
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value,
         this.value);
-    nx = nFormat(this.value, true);
+    nxf = nFormat(this.value, true);
     frameChanged();
 };
 function N_LeftButton()
 {
     NumOfGeophones_slider.value--;
-    nx = nFormat(NumOfGeophones_slider.value, true);
+    nxf = nFormat(NumOfGeophones_slider.value, true);
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value);
     frameChanged();
 }
 function N_RightButton()
 {
     NumOfGeophones_slider.value++;
-    nx = nFormat(NumOfGeophones_slider.value, true);
+    nxf = nFormat(NumOfGeophones_slider.value, true);
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value);
     frameChanged();
 }
@@ -273,14 +306,14 @@ function N_RightButton()
 SourceStack_slider.oninput = function () {
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value,
         this.value);
-    ndata = nDataFormat(this.value, true);
+    ndataf = nDataFormat(this.value, true);
     frameChanged();
 };
 
 function ndata_LeftButton()
 {
     SourceStack_slider.value--;
-    ndata = nDataFormat(SourceStack_slider.value, true);
+    ndataf = nDataFormat(SourceStack_slider.value, true);
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value, SourceStack_slider.value);
     frameChanged();
 }
@@ -288,7 +321,7 @@ function ndata_LeftButton()
 function ndata_RightButton()
 {
     SourceStack_slider.value++;
-    ndata = nDataFormat(SourceStack_slider.value, true);
+    ndataf = nDataFormat(SourceStack_slider.value, true);
     textOutputChange(VelocityTop_slider.value, VelocityMiddle_slider.value, VelocityBottom_slider.value, dx_slider.value, NumOfGeophones_slider.value, SourceStack_slider.value);
     frameChanged();
 }
@@ -340,7 +373,7 @@ function nDataFormat(val, number_val=false) //done
 
 // This function clears the space where the unit text is, and redraws it.
 function textOutputChange(v1_v = VelocityTop_slider.value, v2_v = VelocityMiddle_slider.value,
-                          v3_v = VelocityBottom_slider.value, n_v = dx_slider.value,
+                          v3_v = VelocityBottom_slider.value, nx_v = dx_slider.value,
                           ndata_v = NumOfGeophones_slider.value, dx_v = SourceStack_slider.value)
 {
     // alert("textOutputChange")
@@ -349,7 +382,7 @@ function textOutputChange(v1_v = VelocityTop_slider.value, v2_v = VelocityMiddle
     ctx.rect( X_OFFSET, label_list_y_loc-10, 130, 70);
     ctx.fill();
     labels();
-    displaySliderValues(v1_v, v2_v, v3_v, n_v, ndata_v, dx_v, len_v);
+    displaySliderValues(v1_v, v2_v, v3_v, nx_v, ndata_v, dx_v);
 }
 
 //Set slide-bars
@@ -358,42 +391,42 @@ function setSlideBars() {
     let s_value;
 
     //Set Station Spacing
-    s_value = Math.trunc((v1 - V1Min) * (V1BarMax - V1BarMin) /
+    s_value = Math.trunc((v1f - V1Min) * (V1BarMax - V1BarMin) /
         (V1Max - V1Min) + V1BarMin + 0.5);
     VelocityTop_slider.value = s_value;
     VelocityTop_slider.min = V1BarMin;
     VelocityTop_slider.max = V1BarMax;
     // alert(s_value);
     // //Set Susceptability
-    s_value = Math.trunc((v2 - V2Min) * (V2BarMax - V2BarMin) /
+    s_value = Math.trunc((v2f - V2Min) * (V2BarMax - V2BarMin) /
         (V2Max - V2Min) + V2BarMin + 0.5);
     VelocityMiddle_slider.value = s_value;
     VelocityMiddle_slider.min = V2BarMin;
     VelocityMiddle_slider.max = V2BarMax;
     // alert(s_value);
     //Set Number of Observations, N:
-    s_value = Math.trunc((v3-V3Min) * (V3BarMax - V3BarMin) /
+    s_value = Math.trunc((v3f-V3Min) * (V3BarMax - V3BarMin) /
         (V3Max - V3Min) + V3BarMin + 0.5);
     VelocityBottom_slider.value = s_value;
     VelocityBottom_slider.min = V3BarMin;
     VelocityBottom_slider.max = V3BarMax;
     // alert(s_value);
     // // Set Standard Deviation
-    s_value = Math.trunc((dx-DxMin) * (DxBarMax - DxBarMin) /
+    s_value = Math.trunc((dxf-DxMin) * (DxBarMax - DxBarMin) /
         (DxMax - DxMin) + DxBarMin + 0.5);
     dx_slider.value = s_value;
     dx_slider.min = DxBarMin;
     dx_slider.max = DxBarMax;
     // alert(s_value);
     // // Set Dike Trend
-    s_value = Math.trunc((nx-NMin) * (NBarMax - NBarMin) /
+    s_value = Math.trunc((nxf-NMin) * (NBarMax - NBarMin) /
         (NMax - NMin) + NBarMin + 0.5);
     NumOfGeophones_slider.value = s_value;
     NumOfGeophones_slider.min = NBarMin;
     NumOfGeophones_slider.max = NBarMax;
 
     //Set Inclination
-    s_value = Math.trunc((ndata-NDataMin) * (NDataBarMax - NDataBarMin) /
+    s_value = Math.trunc((ndataf-NDataMin) * (NDataBarMax - NDataBarMin) /
         (NDataMax - NDataMin) + NDataBarMin + 0.5);
     SourceStack_slider.value = s_value;
     SourceStack_slider.min = NDataBarMin;
@@ -401,46 +434,45 @@ function setSlideBars() {
 
 }
 
-function setValues(v1, v2, v3, dx, N, ndata)
+function setValues(v1, v2, v3, dx, nx, ndata)
 {
 
-    dx = dx;
-    v2 = rho;
-    stdf = std;
-    v3 = nobs;
-    dktf = dkt;
-    incf = inc;
-    lengthf = len;
+    v1f = v1;
+    v2f = v2;
+    v3f = v3;
+    ndataf = ndata;
+    dxf = dx;
+    nxf = nx;
 
     // reset range sliders
     //Set Station Spacing
-    s_value = Math.trunc((v1 - V1Min) * (V1BarMax - V1BarMin) /
+    s_value = Math.trunc((v1f - V1Min) * (V1BarMax - V1BarMin) /
         (V1Max - V1Min) + V1BarMin + 0.5);
     VelocityTop_slider.value = s_value;
 
 
     // //Set Density Contrast
-    s_value =  Math.trunc((v2 - V2Min) * (V2BarMax - V2BarMin) /
+    s_value =  Math.trunc((v2f - V2Min) * (V2BarMax - V2BarMin) /
         (V2Max - V2Min) + V2BarMin + 0.5);
     VelocityMiddle_slider.value = s_value;
 
     //Set Number of Observations, N:
-    s_value = Math.trunc((v3-V3Min) * (V3Max - V3Min) /
+    s_value = Math.trunc((v3f -V3Min) * (V3Max - V3Min) /
         (V3Max - V3Min) + V3Min + 0.5);
     VelocityBottom_slider.value = s_value;
     //
     // Set Standard Deviation
-    s_value = Math.trunc((dx - DxMin) * (DxBarMax - DxBarMin) /
+    s_value = Math.trunc((dxf - DxMin) * (DxBarMax - DxBarMin) /
         (DxMax - DxMin) + DxBarMin + 0.5);
     dx_slider.value = s_value;
 
     // Set Dike Trend
-    s_value = Math.trunc((nx-NMin) * (NBarMax - NBarMin) /
+    s_value = Math.trunc((nxf -NMin) * (NBarMax - NBarMin) /
         (NMax - NMin) + NBarMin + 0.5);
     NumOfGeophones_slider.value = s_value;
 
     //Set Incline of Main Field
-    s_value = Math.trunc((ndata-NDataMin) * (NDataBarMax - NDataBarMin) /
+    s_value = Math.trunc((ndataf -NDataMin) * (NDataBarMax - NDataBarMin) /
         (NDataMax - NDataMin) + NDataBarMin + 0.5);
     SourceStack_slider.value = s_value;
 
@@ -448,49 +480,21 @@ function setValues(v1, v2, v3, dx, N, ndata)
 
 function frameChanged()
 {
-    dx = dx;
-    k = v2;
-    dkt = dktf;
-    ndata = v3;
-    inc = incf;
-    std = stdf;
-    let len = lengthf;
-    xmin = -1.0 * len / 2.0;
-    xmax = xmin + len;
+    v1 = v1f;
+    v2 = v2f;
+    v3 = v3f;
+    ndata = ndataf;
+    dx = dxf;
+    nx = nxf;
+    // xmin = -1.0 * len / 2.0;
+    // xmax = xmin + len;
     xscale = gwidth / (xmax - xmin);
 
     ctx.clearRect(0,0, canvas.width, canvas.height);
     r_ctx.clearRect(0,0, width_canvas.width, width_canvas.height);
-    r_ctx.backgroundColor = "#e9e9e9";
+    r_ctx.backgroundColor = "#000000";
     paint();
     displaySliderValues();
 }
 
 
-// function getVals(){
-//     // Get slider values
-//     var parent = this.parentNode;
-//     var slides = parent.getElementsByTagName("input");
-//     var slide1 = parseFloat( slides[0].value );
-//     var slide2 = parseFloat( slides[1].value );
-//     // Neither slider will clip the other, so make sure we determine which is larger
-//     if( slide1 > slide2 ){ var tmp = slide2; slide2 = slide1; slide1 = tmp; }
-//
-//     var displayElement = parent.getElementsByClassName("rangeValues")[0];
-//     displayElement.innerHTML = slide1 + " - " + slide2;
-// }
-//
-// window.onload = function(){
-//     // Initialize Sliders
-//     var sliderSections = document.getElementsByClassName("range-slider");
-//     for( var x = 0; x < sliderSections.length; x++ ){
-//         var sliders = sliderSections[x].getElementsByTagName("input");
-//         for( var y = 0; y < sliders.length; y++ ){
-//             if( sliders[y].type ==="range" ){
-//                 sliders[y].oninput = getVals;
-//                 // Manually trigger event first time to display values
-//                 sliders[y].oninput();
-//             }
-//         }
-//     }
-// }

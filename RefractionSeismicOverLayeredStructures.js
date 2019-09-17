@@ -1,6 +1,10 @@
 //Establish variables for generating applet graphics
 //Define width and height of Applet Draw Area
- let gap = 20; //horizontal spacing between data points in pixels
+const C_WIDTH = 500;
+const C_HEIGHT = 500;
+const X_OFFSET = 100;
+
+let gap = 20; //horizontal spacing between data points in pixels
  let apwidth = 24 * 21 + 150;
  let apheight = 500;
 
@@ -20,17 +24,10 @@
  let lrcory = llcory;
 
 //Define static variables for model and survey parameters
- let  v1, v2, v3; //velocities of layers (m/s)
- let  b1, m1; //intercept and slope of bottom of layer 1
- let  b2, m2; //intercept and slope of bottom of layer 2
- let  sourcex; //source location (m)
- let  recx; //minimum receiver location (m)
- let  dx; //receiver spacing (m)
- let nx; //number of receivers in spread
+
  let snx = 24; //saved number of receivers in spread - this is used
 //to see if user has changed number of recievers
 //if so - then the plot size must be changed
- let  ndata; //Number of observations to average
  let source; //type of source
 
 //Define values used for generating plots
@@ -39,6 +36,25 @@
  let  xscale, tscale; //plot scales
  let layer; //Variable set by GetTMin used to identify
 //the type of arrival returned by GetTMin
+
+//Define Variables used to some initial values
+let v1 = 500.0;
+let v2 = 1200.0;
+let v3 = 2000.0;
+let m1 = 0.0; //slope of bottom of top layer
+let b1 = 5.0; //depth intercept of bottom of top layer
+let m2 = 0.0; //slope of bottom of middle layer
+let b2 = 10.0; //depth intercept of bottom of middle layer
+let sourcex = 200.0; //Source location
+let dsourcex = 0.5; //Allow source movements of this
+let recx = 201.0; //Minimum receiver location
+let drecx = 0.5; //Allow receiver movements of this
+let dx = 3.0; //receiver spacing
+let nx = 24; //number of receivers
+let ndata = 1; //number of sources to stack
+let svalue; //Variable used to construct scrollbars
+
+
 
 //For each trace construct a time series and plot the
 //trace in the appropriate place. First define an array
@@ -73,37 +89,13 @@ let  gset;
 //Establish for model and design Frame
 let ModelFrame, MyModelFrame;
 
+const canvas = document.querySelector('.gtCanvas');
+const width_canvas = document.querySelector('.gtRadSample');
+const ctx = canvas.getContext('2d');
+const r_ctx = width_canvas.getContext('2d');
 
-function start(){
-    //Establish Frame from which model and survey parameters
-    //can be manipulated.
-    MyModelFrame = new ModelFrame("Earth Model and Survey Design", this);
 
-    //Set up offscreen images
-    SetImages(apwidth, apheight);
 
-    //Set plot scales
-    GetScales();
-
-    //Build Travel time image and seismogram images for
-    //initial model
-    MakePlots(ostg, 't');
-    MakePlots(oswg, 'w');
-    MakePlots(osvg, 'v');
-}
-//
-// function stop() {
-//     //Get rid of frame
-//    // MyModelFrame.dispose(); LOOK UP DISPOSE
-//
-//     //Get rid of resources related to images
-//    let offScreenTImage = null;
-//    let offScreenWImage = null;
-//     let offScreenVImage = null;
-//     let  ostg = null;
-//     let oswg = null;
-//     let osvg = null;
-// }
 
 function paint() {
 
