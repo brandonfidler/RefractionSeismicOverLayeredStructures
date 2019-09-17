@@ -126,41 +126,6 @@ function paint() {
     }
 }
 
-//Extract model and survey parameters from ModelFrame.js
-function GetParameters() {
-    v1 = MyModelFrame.GetV1();
-    v2 = MyModelFrame.GetV2();
-    v3 = MyModelFrame.GetV3();
-    b1 = MyModelFrame.GetB1();
-    m1 = MyModelFrame.GetM1();
-    b2 = MyModelFrame.GetB2();
-    m2 = MyModelFrame.GetM2();
-    sourcex = MyModelFrame.GetSourceX();
-    recx = MyModelFrame.GetRecX();
-    dx = MyModelFrame.GetDX();
-    nx = MyModelFrame.GetNX();
-    ndata = MyModelFrame.GetNData();
-    plottraces = MyModelFrame.PlotTraces();
-    source = MyModelFrame.GetStype();
-
-    //Reset trace plotting option in MyModel to false
-    //We do this so that as the user dynamically changes
-    //model parameters the code doesn't try to dynamically
-    //render seismograms. Thus, the user must actively select
-    //the plotting of seismograms each time they want to see
-    //them
-    MyModelFrame.NoTraces();
-
-    //If we need to lets rebuild the plot images and reset the all
-    //of the variables need to compute the plot scale
-    if (nx !== snx)//User changed number of receivers - resize images
-    {
-        let width = (nx + 1) * gap + 150;
-        SetImages(width, apheight);
-    }
-    snx = nx;
-
-}
 
 
 //Compute plot bounds. Minimum time is always set to zero. Maximum time is the time of the
