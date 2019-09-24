@@ -75,7 +75,7 @@ Slider.prototype.init = function () {
         this.domNode.tabIndex = 0;
     }
 
-    this.domNode.addEventListener('keydown',    this.handleKeyDown.bind(this));
+    this.domNode.addEventListener('keyup',    this.handleKeyDown.bind(this));
     this.domNode.addEventListener('mousedown', this.handleMouseDown.bind(this));
     this.domNode.addEventListener('focus',      this.handleFocus.bind(this));
     this.domNode.addEventListener('blur',       this.handleBlur.bind(this));
@@ -129,13 +129,13 @@ Slider.prototype.handleKeyDown = function (event) {
     var flag = false;
 
     switch (event.keyCode) {
-        case this.keyCode.left:
+
         case this.keyCode.down:
             this.moveSliderTo(this.valueNow - 1);
             flag = true;
             break;
 
-        case this.keyCode.right:
+
         case this.keyCode.up:
             this.moveSliderTo(this.valueNow + 1);
             flag = true;

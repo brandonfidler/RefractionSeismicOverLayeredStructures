@@ -121,11 +121,59 @@
                 <div class="col-6" id="module_style_canvas">
                     <canvas class="gtCanvas" id="GravityTunnelCanvas"></canvas>
                     <!-- Gravity Vertical Shaft Labels -->
-                    <section class="range-slider">
-                        <span class="rangeValues"></span>
-                        <input value="5" id="Layer1" min="0" max="15" step="0.5" type="range">
-                        <input value="10" id="Layer2" min="0" max="15" step="0.5" type="range">
-                    </section>
+
+
+                    <div class="aria-widget-slider">
+                        <div class="rail-label min">
+                            0
+                        </div>
+                        <div class="rail" style="width: 300px;">
+                            <img id="minPriceHotel"
+                                 src="blackLine.PNG"
+                                 role="slider"
+                                 tabindex="0"
+                                 class="min thumb"
+                                 aria-valuemin="0"
+                                 aria-valuenow="15"
+                                 aria-valuetext="10"
+                                 aria-valuemax="15"
+                                 aria-label="Hotel Minimum Price">
+                            <img id="maxPriceHotel"
+                                 src="blackLine.PNG"
+                                 role="slider"
+                                 tabindex="0"
+                                 class="max thumb"
+                                 aria-valuemin="0"
+                                 aria-valuenow="5"
+                                 aria-valuetext="5"
+                                 aria-valuemax="15"
+                                 aria-label="Hotel Maximum Price">
+                        </div>
+                        <div class="rail-label max">
+                            0
+                        </div>
+                    </div>
+                    <h3>
+
+                    <!--<section class="range-slider">-->
+                        <!--<span class="rangeValues"></span>-->
+                        <!--<input value="5"-->
+                               <!--id="Layer1"-->
+                               <!--min="0"-->
+                               <!--max="15"-->
+                               <!--step="0.5"-->
+                               <!--type="range"-->
+                               <!--onchange="onRangeChange()"-->
+                        <!--/>-->
+                        <!--<input value="10"-->
+                               <!--id="Layer2"-->
+                               <!--min="0"-->
+                               <!--max="15"-->
+                               <!--step="0.5"-->
+                               <!--type="range"-->
+                               <!--onchange="onRangeChange()"-->
+                        <!--&gt;-->
+                    <!--</section>-->
 
                     <table id="stats">
                         <tr>
@@ -161,10 +209,10 @@
     </div>
 </div>
 
-
+<script type="text/javascript" src="ModelFrame.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script type="text/javascript" src="RefractionSeismicOverLayeredStructures.js"></script>
-<script type="text/javascript" src="ModelFrame.js"></script>
+<script type="text/javascript" src="EarthModelAndSurvey.js"></script>
 </body>
 
 </html>

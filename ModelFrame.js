@@ -140,8 +140,8 @@ function start()
     // alert("hello")
     if (canvas.getContext)
     {
-        canvas.width = (C_WIDTH+10);
-        canvas.height = (C_HEIGHT+5);
+        canvas.width = (apwidth+10);
+        canvas.height = (apheight+5);
         v1 = v1f;
         v2 = v2f;
         v3 = v3f;

@@ -94,35 +94,96 @@ const width_canvas = document.querySelector('.gtRadSample');
 const ctx = canvas.getContext('2d');
 const r_ctx = width_canvas.getContext('2d');
 
-
+plottraces = document.getElementById('PSeisms');
 
 
 function paint() {
 
-    //Blast out the appropriate image - either travel times only,
-    //travel times with wiggle plots, or travel times with variable
-    //area plots
-    if (plottraces === false)//Plot Travel times only
+    // Plot Cross section
+    plotXSection();
+    // Plot Gravity Data
+    plotData();
+    // Draw Axes
+    drawAxes();
+}
 
+function drawAxes()
+{
+    let run = false;
+    let xint;
+    ctx.font = "12px Arial";
 
-        drawImage(offScreenTImage, 0, 0, null);
-    else {
-        if (plotva === false)//Plot wiggle traces
+    ctx.beginPath();
+    ctx.strokeStyle = "#000000";
 
-
-            drawImage(offScreenWImage, 0, 0, null);
-        else //Plot variable area traces
-
-
-            drawImage(offScreenVImage, 0, 0, null);
+    //do x axis first
+    drawLine(ulcorx, ulcory, urcorx, urcory);
+    for (xint = xmin; xint <= xmax; xint += (xmax - xmin) / 5.0)
+    {
+        drawLine( XLoc(xint), ulcory, XLoc(xint), ulcory - 5);
+        ctx.fillText((xint), XLoc(xint) - 7, ulcory - 8);
     }
+    ctx.fillText("Distance (m)", apwidth / 2 - 30 , 25);
+
+
+    drawLine(10 + urcorx, urcory, 10 + lrcorx, lrcory);
+    for (xint = ymin; xint <= ymax; xint += Math.abs(ymax - ymin) / 5.0)
+    {
+        drawLine(10 + urcorx, YLoc(xint), 5 + urcorx, YLoc(xint));
+        ctx.fillText(xint.toFixed(1), 18 + urcorx, YLoc(xint)+5);
+    }
+    ctx.fillText("Field Strength (nT)", lrcorx - 40, lrcory + 20);
+
+    drawLine(20 + urcorx, pheight, 20 + urcorx, apheight);
+    for (xint = 0; xint < dmax; xint +=dmax / 5.0)
+    {
+        run = true;
+        drawLine(20+urcorx, Math.trunc(pheight+xint*dscale),
+            15 +urcorx, Math.trunc(pheight + xint * dscale));//dscale is in setScale()
+        ctx.fillText(xint.toFixed(1), 28+urcorx, Math.trunc(pheight+xint*dscale) +5);
+    }
+
+    ctx.fillText("Depth (m)", urcorx - 45, apheight - 10);
+    ctx.closePath();
+    ctx.stroke()
+}
+
+function drawLine(x1, y1, x2, y2)
+{
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
 }
 
 
 
+function setScales()
+{
+
+    let x, temp;
+    ymax = -1000.0;
+    ymin = 1000.0;
+
+    for (x = xmin; x <=xmax; x += dx)
+    {
+        temp = getFieldStrength(x);
+        if (temp < ymin) {
+            ymin = temp * 1.1;
+        }
+        if (temp > ymax) {
+            ymax = temp * 1.1;
+        }
+    }
+
+    xscale = gwidth / (xmax-xmin);
+    yscale = gheight / (ymax - ymin);
+    dscale = (apheight - pheight) / dmax;
+}
 //Compute plot bounds. Minimum time is always set to zero. Maximum time is the time of the
 //latest arrival + 10% or 100.0 ms, which ever is greater.
 function GetScales() {
+
     xmin = recx;
     xmax = recx + (nx - 1) * dx;
     //xscale = gwidth/(xmax-xmin);
